@@ -13,41 +13,41 @@ import jakarta.persistence.Table;
 public class AccountDB implements Account {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-    private String personId;
-    private String bankId;
+    private long personId;
+    private long bankId;
     private String accountType;
     private long balance;
 
     @Override
-    public String getId() {
+    public long getId() {
         return id;
     }
 
     @Override
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 
     @Override
-    public String getPersonId() {
+    public long getPersonId() {
         return personId;
     }
 
     @Override
-    public void setPersonId(String personId) {
+    public void setPersonId(long personId) {
         this.personId = personId;
     }
 
     @Override
-    public String getBankId() {
+    public long getBankId() {
         return bankId;
     }
 
     @Override
-    public void setBankId(String bankId) {
+    public void setBankId(long bankId) {
         this.bankId = bankId;
     }
 

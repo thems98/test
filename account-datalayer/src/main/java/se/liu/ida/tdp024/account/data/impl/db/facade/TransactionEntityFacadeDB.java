@@ -15,14 +15,14 @@ import java.util.List;
 
 public class TransactionEntityFacadeDB implements TransactionEntityFacade {
 
-    private static final DateTimeFormatter TIMESTAMP =
+    private static final DateTimeFormatter created =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     // ---------------------------------------------------------------
     // ADD  — always persists, even on FAILED status
     // ---------------------------------------------------------------
     @Override
-    public boolean addTransaction(String accountId, String type, long amount, String status) {
+    public boolean addTransaction(long accountId, String type, long amount, String status) {
         EntityManager em = PersistenceManager.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -33,7 +33,7 @@ public class TransactionEntityFacadeDB implements TransactionEntityFacade {
             t.setTransactionType(type);           // DEBIT | CREDIT
             t.setAmount(amount);                  // positive magnitude
             t.setStatus(status);                  // OK | FAILED
-            t.setTimestamp(LocalDateTime.now().format(TIMESTAMP));
+            t.setCreated(LocalDateTime.now().format(created));
 
             em.persist(t);
             tx.commit();

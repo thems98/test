@@ -8,7 +8,7 @@ public interface TransactionEntityFacade {
     /**
      * Persists a transaction. Always persists — even when status == "FAILED".
      */
-    boolean addTransaction(String accountId, String type, long amount, String status);
+    boolean addTransaction(long accountId, String type, long amount, String status);
 
     /**
      * Returns all transactions for the given account, oldest first.

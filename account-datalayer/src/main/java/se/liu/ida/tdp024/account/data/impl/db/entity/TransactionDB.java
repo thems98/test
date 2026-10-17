@@ -14,9 +14,9 @@ public class TransactionDB implements Transaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private long id;
 
-    private String accountId;
+    private long accountId;
     private String transactionType;
     private long amount;
     private String timestamp;
@@ -25,7 +25,7 @@ public class TransactionDB implements Transaction {
     // --- required by JPA ---
     public TransactionDB() { }
 
-    public TransactionDB(String accountId, String transactionType,
+    public TransactionDB(long accountId, String transactionType,
                          long amount, String timestamp, String status) {
         this.accountId = accountId;
         this.transactionType = transactionType;
@@ -36,11 +36,11 @@ public class TransactionDB implements Transaction {
 
     // --- existing getters/setters (unchanged) ---
 
-    @Override public String getId() { return this.id; }
-    @Override public void setId(String id) { this.id = id; }
+    @Override public long getId() { return this.id; }
+    @Override public void setId(long id) { this.id = id; }
 
-    @Override public String getAccountId() { return this.accountId; }
-    @Override public void setAccountId(String accountId) { this.accountId = accountId; }
+    @Override public long getAccountId() { return this.accountId; }
+    @Override public void setAccountId(long accountId) { this.accountId = accountId; }
 
     @Override public String getTransactionType() { return this.transactionType; }
     @Override public void setTransactionType(String transactionType) { this.transactionType = transactionType; }
@@ -48,8 +48,8 @@ public class TransactionDB implements Transaction {
     @Override public long getAmount() { return this.amount; }
     @Override public void setAmount(long amount) { this.amount = amount; }
 
-    @Override public String getTimestamp() { return this.timestamp; }
-    @Override public void setTimestamp(String timestamp) { this.timestamp = timestamp; }
+    @Override public String getCreated() { return this.timestamp; }
+    @Override public void setCreated(String timestamp) { this.timestamp = timestamp; }
 
     // --- the two stubs you had are now real ---
 

@@ -17,7 +17,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // CREATE
     // ---------------------------------------------------------------
     @Override
-    public boolean createAccount(String accountType, String personKey, String bankKey) {
+    public boolean createAccount(String accountType, long personKey, long bankKey) {
         EntityManager em = PersistenceManager.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -56,7 +56,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // FIND by person key (all accounts belonging to one person)
     // ---------------------------------------------------------------
     @Override
-    public List<Account> findByPerson(String personKey) {
+    public List<Account> findByPerson(long personKey) {
         EntityManager em = PersistenceManager.createEntityManager();
         try {
             TypedQuery<Account> q = em.createQuery(
@@ -76,7 +76,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // FIND by bank key (all accounts belonging to one bank)
     // ---------------------------------------------------------------
     @Override
-    public List<Account> findByBank(String bankKey) {
+    public List<Account> findByBank(long bankKey) {
         EntityManager em = PersistenceManager.createEntityManager();
         try {
             TypedQuery<Account> q = em.createQuery(
