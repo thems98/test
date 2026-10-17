@@ -7,8 +7,8 @@ public interface AccountEntityFacade {
     public List<Account> findByPerson(long personKey);
     public List<Account> findByBank(long bankKey);
     public Account find(long id);
-    public boolean debit(long id, Integer amount);
-    public boolean credit(long id, Integer amount);
+    public boolean debit(long id, long amount);
+    public boolean credit(long id, long amount);
     // void update(Account account);
     // public Account getAccount(long id);
     

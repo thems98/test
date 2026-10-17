@@ -27,15 +27,21 @@
                 <version>2.9.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- <dependency>
+        <dependency>
           <groupId>tdp024</groupId>
           <artifactId>logic</artifactId>
           <version>${project.version}</version>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>com.googlecode.json-simple</groupId>
             <artifactId>json-simple</artifactId>
             <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+            <version>4.2.0-M2</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

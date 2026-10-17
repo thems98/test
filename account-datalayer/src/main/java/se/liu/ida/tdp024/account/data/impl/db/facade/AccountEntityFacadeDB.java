@@ -96,7 +96,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // DEBIT  (subtract from balance)
     // ---------------------------------------------------------------
     @Override
-    public boolean debit(long id, Integer amount) {
+    public boolean debit(long id, long amount) {
         EntityManager em = PersistenceManager.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -125,7 +125,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // CREDIT  (add to balance)
     // ---------------------------------------------------------------
     @Override
-    public boolean credit(long id, Integer amount) {
+    public boolean credit(long id, long amount) {
         EntityManager em = PersistenceManager.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {

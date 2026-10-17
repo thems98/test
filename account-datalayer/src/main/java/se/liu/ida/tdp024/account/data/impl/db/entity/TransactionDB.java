@@ -19,22 +19,20 @@ public class TransactionDB implements Transaction {
     private long accountId;
     private String transactionType;
     private long amount;
-    private String timestamp;
-    private String status;                 // <-- NEW FIELD
+    private String created;
+    private String status;                 
 
     // --- required by JPA ---
     public TransactionDB() { }
 
     public TransactionDB(long accountId, String transactionType,
-                         long amount, String timestamp, String status) {
+                         long amount, String created, String status) {
         this.accountId = accountId;
         this.transactionType = transactionType;
         this.amount = amount;
-        this.timestamp = timestamp;
+        this.created = created;
         this.status = status;
     }
-
-    // --- existing getters/setters (unchanged) ---
 
     @Override public long getId() { return this.id; }
     @Override public void setId(long id) { this.id = id; }
@@ -48,8 +46,8 @@ public class TransactionDB implements Transaction {
     @Override public long getAmount() { return this.amount; }
     @Override public void setAmount(long amount) { this.amount = amount; }
 
-    @Override public String getCreated() { return this.timestamp; }
-    @Override public void setCreated(String timestamp) { this.timestamp = timestamp; }
+    @Override public String getCreated() { return this.created; }
+    @Override public void setCreated(String created) { this.created = created; }
 
     // --- the two stubs you had are now real ---
 

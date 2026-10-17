@@ -1,24 +1,20 @@
 package se.liu.ida.tdp024.account.logic.api.facade;
 
-import java.util.List;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
-//import se.liu.ida.tdp024.account.data.api.entity.Transaction;
-import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
+import java.util.List;
 
 public interface AccountLogicFacade {
 
-    public boolean createAccount(String accountType, String personKey, String bankKey);
+    boolean createAccount(long personKey, long bankKey, String accountType);
 
-    // public List<Account> findAccountsByPerson(String personKey);
+    List<Account> findAccountsByPerson(long personKey);
 
-    // public List<Account> findAccountsByBank(String bankKey);
+    List<Account> findAccountsByBank(long bankKey);
 
-    public boolean debit(Long accountId, long amount);
+    boolean debit(long accountId, long amount);
 
-    public boolean credit(Long accountId, long amount);
+    boolean credit(long accountId, long amount);
 
-    //List<Transaction> getTransactions(Long accountId);
+    List<Transaction> getTransactions(long accountId);
 }
