@@ -56,7 +56,7 @@ public class AccountDB implements Account {
     }
     
     public boolean addBalance(long bal){
-      this.balance += balance;
+      this.balance += bal;
       return true;
     }
     
