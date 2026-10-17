@@ -13,6 +13,7 @@ public interface Account extends Serializable {
     public void setBankId(String bankKey);
     public void setBalance(long bal);
     public void setAccountType(String accountType);
+    public void setId(String id);
 
     public boolean addBalance(long bal);
     public boolean removeBalance(long bal);

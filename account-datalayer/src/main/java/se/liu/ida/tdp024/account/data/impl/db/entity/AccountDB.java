@@ -1,73 +1,88 @@
 package se.liu.ida.tdp024.account.data.impl.db.entity;
 
+import se.liu.ida.tdp024.account.data.api.entity.Account;
+
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import se.liu.ida.tdp024.account.data.api.entity.Account;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "accounts")
 public class AccountDB implements Account {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    
-	private String id;
-	private long balance;
-    private String accountType;
+    private String id;
+
     private String personId;
     private String bankId;
+    private String accountType;
+    private long balance;
 
-	@Override
-	public String getId() {
-		return this.id;
-	}
-
-	@Override
-	public long getBalance() {
-        return this.balance;
-	}
-
-     public void setPersonId(String personId){
-      this.personId = personId;
+    @Override
+    public String getId() {
+        return id;
     }
-    
-    public String getPersonId(){
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String getPersonId() {
         return personId;
     }
-    
-    
-    public void setAccountType(String accountType){
-      this.accountType = accountType;
+
+    @Override
+    public void setPersonId(String personId) {
+        this.personId = personId;
     }
-    
-    public String getAccountType(){
-      return accountType;
+
+    @Override
+    public String getBankId() {
+        return bankId;
     }
-    
-    public String getBankId(){
-      return this.bankId;
+
+    @Override
+    public void setBankId(String bankId) {
+        this.bankId = bankId;
     }
-    
-    public void setBankId(String bankKey){
-      this.bankId = bankKey;
+
+    @Override
+    public String getAccountType() {
+        return accountType;
     }
-    
-    public void setBalance(long bal){
-      this.balance = bal;
+
+    @Override
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
     }
-    
-    public boolean addBalance(long bal){
-      this.balance += bal;
-      return true;
+
+    @Override
+    public long getBalance() {
+        return balance;
     }
-    
-    public boolean removeBalance(long bal){
-      if(this.balance - bal >= 0) {
+
+    @Override
+    public void setBalance(long balance) {
+        this.balance = balance;
+    }
+
+    @Override
+    public boolean addBalance(long bal) {
+        this.balance += bal;
+        return true;
+    }
+
+    @Override
+    public boolean removeBalance(long bal) {
+        if (this.balance - bal < 0) {
+            return false;
+        }
         this.balance -= bal;
         return true;
-      }
-      return false;
     }
-    
-    
-      
 }

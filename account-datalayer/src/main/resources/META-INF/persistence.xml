@@ -3,6 +3,7 @@
   <persistence-unit name="account-dataPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
     <shared-cache-mode>NONE</shared-cache-mode>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes> <!-- if unknown entity then did not work -->
     <validation-mode>NONE</validation-mode>
     <properties>
       <property name="jakarta.persistence.jdbc.url" value="jdbc:derby:memory:dataPU_embedded;create=true"/>

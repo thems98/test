@@ -8,9 +8,13 @@ public interface Transaction extends Serializable {
     public long getAmount();
     public String getTimestamp();
 
+    public void setId(String id);
     public void setAccountId(String accountId);
     public void setTransactionType(String transactionType);
     public void setAmount(long amount);
     public void setTimestamp(String timestamp);
+
+    String getStatus();
+    void setStatus(String status); 
     
 }

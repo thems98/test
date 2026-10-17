@@ -1,10 +1,17 @@
 package se.liu.ida.tdp024.account.data.api.facade;
-import java.util.ArrayList;
-import java.util.List;
+
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
-import se.liu.ida.tdp024.account.data.api.entity.Account;
+import java.util.List;
 
 public interface TransactionEntityFacade {
-    public boolean addTransaction(String accoundId, String transactionType, long amount);
-    public List<Transaction> getTransactions(long id);
+
+    /**
+     * Persists a transaction. Always persists — even when status == "FAILED".
+     */
+    boolean addTransaction(String accountId, String type, long amount, String status);
+
+    /**
+     * Returns all transactions for the given account, oldest first.
+     */
+    List<Transaction> getTransactions(long accountId);
 }
