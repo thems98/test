@@ -1,53 +1,66 @@
 package hello;
-//import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.web.bind.annotation.GetMapping;
-//import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.json.simple.JSONObject;
-//import org.json.simple.*;
-@RestController 
+
+import se.liu.ida.tdp024.account.data.api.entity.Account;
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
+import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
+
+import java.util.List;
+
+@RestController
 public class AccountController {
 
-    
+    private final AccountLogicFacade logic;
+
+    public AccountController(AccountLogicFacade logic) {
+        this.logic = logic;
+    }
+
     @GetMapping("/account/create")
     public String createAccount(
-        @RequestParam("accounttype") String accountType,
-        @RequestParam("person") String personKey,
-        @RequestParam("bank") String bankName) {
-        
-        return "Logiklagerstuff anrop";
+            @RequestParam("accounttype") String accountType,
+            @RequestParam("person") long personKey,
+            @RequestParam("bank") long bankKey) {
+
+        String ok = logic.createAccount(personKey, bankKey, accountType);
+        System.out.println("--------------------------------------HEJ-------------------------------------");
+        System.out.println(ok);
+        return ok;
     }
 
-    @GetMapping("account/find/person")
-    public String findAccount(
-        @RequestParam("person") String personKey
-        ) {
-            
-        return "Logiklagerstuff anrop";
+    @GetMapping("/account/find/person")
+    public List<Account> findAccountByPerson(
+            @RequestParam("person") long personKey) {
+
+        return logic.findAccountsByPerson(personKey);
     }
 
-    @GetMapping("account/debit")
+    @GetMapping("/account/debit")
     public String debitAccount(
-        @RequestParam("id") String accountKey,
-        @RequestParam("amount") int amount) {
+            @RequestParam("id") long accountId,
+            @RequestParam("amount") int amount) {
 
-        return "Logiklagerstuff anrop";
+        boolean ok = logic.debit(accountId, amount);
+        return ok ? "OK" : "FAILED";
     }
 
-    @GetMapping("account/credit")
+    @GetMapping("/account/credit")
     public String creditAccount(
-        @RequestParam("id") String accountKey,
-        @RequestParam ("amount") int amount
-    ) {
-        return "logiklagerstuff anrop";
+            @RequestParam("id") long accountId,
+            @RequestParam("amount") int amount) {
+
+        boolean ok = logic.credit(accountId, amount);
+        return ok ? "OK" : "FAILED";
     }
 
-    @GetMapping("account/transactions")
-    public  JSONObject getTransactions(
-        @RequestParam("id") String accountKey
-    ){
-        return new JSONObject();
-    }   
+    // Spec: /account/transactions
+    @GetMapping("/account/transactions")
+    public List<Transaction> getTransactions(
+            @RequestParam("id") long accountId) {
+
+        return logic.getTransactions(accountId);
+    }
 }

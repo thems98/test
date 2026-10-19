@@ -4,9 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+
 
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
+import se.liu.ida.tdp024.account.data.api.entity.Account;
 
 @Entity
 @Table(name = "TRANSACTIONS")
@@ -49,8 +51,19 @@ public class TransactionDB implements Transaction {
     @Override public String getCreated() { return this.created; }
     @Override public void setCreated(String created) { this.created = created; }
 
-    // --- the two stubs you had are now real ---
-
     @Override public String getStatus() { return this.status; }
     @Override public void setStatus(String status) { this.status = status; }
+
+    @Transient
+    private Account account;
+
+    @Override
+    public Account getAccount() {
+        return account;
+    }
+
+    @Override
+    public void setAccount(Account account) {
+        this.account = account;
+    }
 }

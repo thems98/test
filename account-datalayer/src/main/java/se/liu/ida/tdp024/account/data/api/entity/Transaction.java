@@ -16,5 +16,8 @@ public interface Transaction extends Serializable {
 
     String getStatus();
     void setStatus(String status); 
+
+    Account getAccount();
+    void setAccount(Account account);
     
 }

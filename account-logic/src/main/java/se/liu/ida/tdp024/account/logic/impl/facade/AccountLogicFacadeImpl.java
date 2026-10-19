@@ -21,6 +21,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import se.liu.ida.tdp024.account.data.api.entity.Transaction;
+
 @Service
 public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
@@ -51,8 +53,8 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     // CREATE
     // ============================================================
     @Override
-    public boolean createAccount(long personKey, long bankKey, String accountType) {
-        boolean ok = false;
+    public String createAccount(long personKey, long bankKey, String accountType) {
+        String ok = "FAILED";
 
         if (personKey == 0) {
             log.warn("createAccount: empty personKey");
@@ -65,6 +67,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         } else if (!validateBank(bankKey)) {
             log.warn("createAccount: unknown bankKey '{}'", bankKey);
         } else {
+            
             ok = accountFacade.createAccount(accountType, personKey, bankKey);
         }
 
@@ -72,7 +75,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
                 "personKey", String.valueOf(personKey),
                 "bankKey", String.valueOf(bankKey),
                 "accountType", String.valueOf(accountType),
-                "success", ok
+                "success", String.valueOf(ok)
         ));
 
         return ok;
@@ -144,7 +147,22 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
 
     @Override
     public List<Transaction> getTransactions(long accountId) {
-        return transactionFacade.getTransactions(accountId);
+        // 1. Fetch all transactions for this account from the database
+        List<Transaction> transactions = transactionFacade.getTransactions(accountId);
+
+        if (transactions == null || transactions.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        // 2. Fetch the Account object once (since all transactions belong to the same account)
+        Account account = accountFacade.find(accountId);
+
+        // 3. Attach the account object to each transaction so Jackson serializes it
+        for (Transaction tx : transactions) {
+            tx.setAccount(account);
+        }
+
+        return transactions;
     }
 
     // ============================================================

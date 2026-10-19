@@ -17,7 +17,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // CREATE
     // ---------------------------------------------------------------
     @Override
-    public boolean createAccount(String accountType, long personKey, long bankKey) {
+    public String createAccount(String accountType, long personKey, long bankKey) {
         EntityManager em = PersistenceManager.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -26,14 +26,14 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
             account.setPersonId(personKey);
             account.setBankId(bankKey);
             account.setAccountType(accountType);   // "CHECK" or "SAVINGS"
-            account.setBalance(0);
+            account.setHoldings(0);
             em.persist(account);
             tx.commit();
-            return true;
+            return "OK";
         } catch (Exception e) {
             if (tx.isActive()) tx.rollback();
             e.printStackTrace();
-            return false;
+            return "FAILED";
         } finally {
             em.close();
         }
@@ -106,7 +106,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 tx.rollback();
                 return false;
             }
-            boolean ok = account.removeBalance(amount);
+            boolean ok = account.removeHoldings(amount);
             if (ok) {
                 em.merge(account);
             }
@@ -135,7 +135,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
                 tx.rollback();
                 return false;
             }
-            account.addBalance(amount);
+            account.addHoldings(amount);
             em.merge(account);
             tx.commit();
             return true;

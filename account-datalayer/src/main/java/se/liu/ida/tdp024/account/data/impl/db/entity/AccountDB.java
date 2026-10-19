@@ -7,6 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+// import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "accounts")
@@ -19,7 +20,7 @@ public class AccountDB implements Account {
     private long personId;
     private long bankId;
     private String accountType;
-    private long balance;
+    private long holdings;
 
     @Override
     public long getId() {
@@ -62,27 +63,27 @@ public class AccountDB implements Account {
     }
 
     @Override
-    public long getBalance() {
-        return balance;
+    public long getHoldings() {
+        return holdings;
     }
 
     @Override
-    public void setBalance(long balance) {
-        this.balance = balance;
+    public void setHoldings(long balance) {
+        this.holdings = balance;
     }
 
     @Override
-    public boolean addBalance(long bal) {
-        this.balance += bal;
+    public boolean addHoldings(long bal) {
+        this.holdings += bal;
         return true;
     }
 
     @Override
-    public boolean removeBalance(long bal) {
-        if (this.balance - bal < 0) {
+    public boolean removeHoldings(long bal) {
+        if (this.holdings - bal < 0) {
             return false;
         }
-        this.balance -= bal;
+        this.holdings -= bal;
         return true;
     }
 }
