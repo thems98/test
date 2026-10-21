@@ -22,10 +22,10 @@ public class AccountController {
     @GetMapping("/account/create")
     public String createAccount(
             @RequestParam("accounttype") String accountType,
-            @RequestParam("person") long personKey,
-            @RequestParam("bank") long bankKey) {
+            @RequestParam("person") Long personKey,
+            @RequestParam("bank") String bankName) {
 
-        String ok = logic.createAccount(personKey, bankKey, accountType);
+        String ok = logic.createAccount(personKey, bankName, accountType);
         System.out.println("--------------------------------------HEJ-------------------------------------");
         System.out.println(ok);
         return ok;

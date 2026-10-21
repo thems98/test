@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface AccountLogicFacade {
 
-    String createAccount(long personKey, long bankKey, String accountType);
+    String createAccount(long personKey, String BankName, String accountType);
 
     List<Account> findAccountsByPerson(long personKey);
 

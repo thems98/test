@@ -15,7 +15,7 @@ import se.liu.ida.tdp024.account.data.api.entity.Account;
 public class TransactionDB implements Transaction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     private long accountId;

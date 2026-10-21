@@ -23,4 +23,5 @@ def process_location_updates():
         print(f"Received location update for Driver {driver_id}: ({latitude}, {longitude}) at {timestamp}")
 
 # Start consuming location updates
-process_location_updates()
+if __name__ == "__main__":
+    process_location_updates()

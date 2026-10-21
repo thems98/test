@@ -14,6 +14,8 @@ import se.liu.ida.tdp024.account.data.api.facade.TransactionEntityFacade;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
 import se.liu.ida.tdp024.account.logic.util.KafkaConfig;
 import se.liu.ida.tdp024.account.logic.kafka.KafkaPublisher;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -53,26 +55,27 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     // CREATE
     // ============================================================
     @Override
-    public String createAccount(long personKey, long bankKey, String accountType) {
+    public String createAccount(long personKey, String bankName, String accountType) {
         String ok = "FAILED";
+        Long bankKey = validateBank(bankName);
 
         if (personKey == 0) {
             log.warn("createAccount: empty personKey");
-        } else if (bankKey == 0) {
-            log.warn("createAccount: empty bankKey");
-        } else if (!"CHECK".equals(accountType) && !"SAVINGS".equals(accountType)) {
+        } else if (bankName == null || bankName.isBlank()) {
+            log.warn("createAccount: empty bankName");
+        } else if (!"CHECK".equals(accountType)
+                && !"SAVINGS".equals(accountType)) {
             log.warn("createAccount: invalid accountType '{}'", accountType);
         } else if (!validatePerson(personKey)) {
             log.warn("createAccount: unknown personKey '{}'", personKey);
-        } else if (!validateBank(bankKey)) {
-            log.warn("createAccount: unknown bankKey '{}'", bankKey);
+        } else if (bankKey == null) {
+            log.warn("createAccount: unknown bank '{}'", bankName);
         } else {
-            
             ok = accountFacade.createAccount(accountType, personKey, bankKey);
         }
-
         publishRestEvent("createAccount", Map.of(
                 "personKey", String.valueOf(personKey),
+                "bankName", String.valueOf(bankName),
                 "bankKey", String.valueOf(bankKey),
                 "accountType", String.valueOf(accountType),
                 "success", String.valueOf(ok)
@@ -182,17 +185,36 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
         }
     }
 
-    private boolean validateBank(long bankKey) {
+    private Long validateBank(String bankName) {
         try {
             ResponseEntity<String> resp = restTemplate.getForEntity(
-                    bankBaseUrl + "/find.key?key={k}", String.class, bankKey);
-            return resp.getStatusCode().is2xxSuccessful()
-                    && resp.getBody() != null
-                    && !resp.getBody().equals("null")
-                    && !resp.getBody().isEmpty();
+                    bankBaseUrl + "/find.name?name={name}",
+                    String.class,
+                    bankName
+            );
+
+            String body = resp.getBody();
+
+            if (!resp.getStatusCode().is2xxSuccessful()
+                    || body == null
+                    || body.isBlank()
+                    || body.equals("null")) {
+                return null;
+            }
+
+            JsonNode bank = new ObjectMapper().readTree(body);
+
+            if (!bank.hasNonNull("key")) {
+                log.warn("Bank API response has no key field: {}", body);
+                return null;
+            }
+
+            return bank.get("key").asLong();
+
         } catch (Exception e) {
-            log.warn("bankapi unreachable for key '{}': {}", bankKey, e.getMessage());
-            return false;
+            log.warn("Failed to retrieve bank '{}' from bank API: {}",
+                    bankName, e.getMessage());
+            return null;
         }
     }
 
