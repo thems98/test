@@ -1,17 +1,15 @@
 package se.liu.ida.tdp024.account.data.impl.db.entity;
 
-import se.liu.ida.tdp024.account.data.api.entity.Account;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-// import com.fasterxml.jackson.annotation.JsonProperty;
-// import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-
-import com.fasterxml.jackson.annotation.JsonIncludeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Version;
+import se.liu.ida.tdp024.account.data.api.entity.Account;
 
 @Entity
 @Table(name = "accounts")
@@ -22,10 +20,16 @@ public class AccountDB implements Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Version
+    private long version;
+
     private String personId;
     private long bankId;
     private String accountType;
     private long holdings;
+
+
+
     @Override
     public long getId() {
         return id;

@@ -179,16 +179,31 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     // ============================================================
     // HELPERS
     // ============================================================
+    // private boolean validatePerson(String personKey) {
+    //     try {
+    //         ResponseEntity<String> resp = restTemplate.getForEntity(
+    //                 personBaseUrl + "/find.key?key={k}", String.class, personKey);
+    //         return resp.getStatusCode().is2xxSuccessful()
+    //                 && resp.getBody() != null
+    //                 && !resp.getBody().equals("null")
+    //                 && !resp.getBody().isEmpty();
+    //     } catch (Exception e) {
+    //         log.warn("personapi unreachable for key '{}': {}", personKey, e.getMessage());
+    //         return false;
+    //     }
+    // }
+
     private boolean validatePerson(String personKey) {
         try {
             ResponseEntity<String> resp = restTemplate.getForEntity(
                     personBaseUrl + "/find.key?key={k}", String.class, personKey);
-            return resp.getStatusCode().is2xxSuccessful()
-                    && resp.getBody() != null
-                    && !resp.getBody().equals("null")
-                    && !resp.getBody().isEmpty();
+            if (!resp.getStatusCode().is2xxSuccessful()) return false;
+            String body = resp.getBody();
+            if (body == null || body.isBlank() || "null".equals(body)) return false;
+            JsonNode node = new ObjectMapper().readTree(body);
+            return node.isObject() && node.has(personKey);
         } catch (Exception e) {
-            log.warn("personapi unreachable for key '{}': {}", personKey, e.getMessage());
+            log.warn("personapi unreachable for '{}': {}", personKey, e.getMessage());
             return false;
         }
     }
