@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Wed Oct 21 14:27:17 CEST 2026:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.17.1.0 - (1913217): instance a816c00e-01a1-5e6e-1c88-00000a2acc70 
+on database directory memory:/home/hanga366/tdp024/project/account-datalayer/accountDB with class loader jdk.internal.loader.ClassLoaders$AppClassLoader@76ed5528 
+Loaded from file:/home/hanga366/.m2/repository/org/apache/derby/derby/10.17.1.0/derby-10.17.1.0.jar
+java.vendor=Ubuntu
+java.runtime.version=21.0.12.1+1-1-24.04.4-Ubuntu
+user.dir=/home/hanga366/tdp024/project/account-datalayer
+os.name=Linux
+os.arch=amd64
+os.version=7.0.0-38-generic
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''

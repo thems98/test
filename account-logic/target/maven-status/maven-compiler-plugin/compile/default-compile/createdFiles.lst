@@ -1,0 +1,4 @@
+se/liu/ida/tdp024/account/logic/api/facade/AccountLogicFacade.class
+se/liu/ida/tdp024/account/logic/impl/facade/AccountLogicFacadeImpl.class
+se/liu/ida/tdp024/account/logic/kafka/KafkaPublisher.class
+se/liu/ida/tdp024/account/logic/util/KafkaConfig.class

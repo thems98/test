@@ -1,0 +1,7 @@
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/http/HTTPHelper.java
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/http/HTTPHelperImpl.java
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/json/AccountJsonSerializer.java
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/json/AccountJsonSerializerImpl.java
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/logger/AccountLogger.java
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/logger/AccountLoggerImpl.java
+/home/thems/Documents/tdp024/project/account-xfinal-test/src/main/java/se/liu/ida/tdp024/account/util/logger/AccountLoggerMonlog.java
