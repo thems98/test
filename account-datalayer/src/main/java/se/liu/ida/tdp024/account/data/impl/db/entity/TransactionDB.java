@@ -10,8 +10,12 @@ import jakarta.persistence.*;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
-@Table(name = "TRANSACTIONS")
+@Table(name = "transactions")
+@JsonIncludeProperties({"id", "type", "amount", "created", "status", "account"})
 public class TransactionDB implements Transaction {
 
     @Id
@@ -42,9 +46,14 @@ public class TransactionDB implements Transaction {
     @Override public long getAccountId() { return this.accountId; }
     @Override public void setAccountId(long accountId) { this.accountId = accountId; }
 
-    @Override public String getTransactionType() { return this.transactionType; }
-    @Override public void setTransactionType(String transactionType) { this.transactionType = transactionType; }
+    @Override
+    @JsonProperty("type")
+    public String getTransactionType() { return transactionType; } 
 
+    @Override
+    @JsonProperty("type")
+    public void setTransactionType(String transactionType) { this.transactionType = transactionType; }
+    
     @Override public long getAmount() { return this.amount; }
     @Override public void setAmount(long amount) { this.amount = amount; }
 

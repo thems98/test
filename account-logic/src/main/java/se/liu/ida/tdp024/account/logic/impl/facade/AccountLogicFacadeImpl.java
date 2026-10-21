@@ -55,11 +55,19 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     // CREATE
     // ============================================================
     @Override
-    public String createAccount(long personKey, String bankName, String accountType) {
+    public String createAccount(String personKey, String bankName, String accountType) {
+        if (personKey == null || personKey.isBlank()) return "FAILED";
+        if (bankName   == null || bankName.isBlank()) return "FAILED";
+        if (!"CHECK".equals(accountType) && !"SAVINGS".equals(accountType)) return "FAILED";
+
+        // if (!validatePerson(personKey) || !validateBank(bankName)) {
+        //     return "FAILED";
+        // }
+        
         String ok = "FAILED";
         Long bankKey = validateBank(bankName);
 
-        if (personKey == 0) {
+        if (personKey == null || personKey.isBlank()) {
             log.warn("createAccount: empty personKey");
         } else if (bankName == null || bankName.isBlank()) {
             log.warn("createAccount: empty bankName");
@@ -137,8 +145,8 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     // LOOKUPS
     // ============================================================
     @Override
-    public List<Account> findAccountsByPerson(long personKey) {
-        if (personKey == 0) return Collections.emptyList();
+    public List<Account> findAccountsByPerson(String personKey) {
+        if (personKey == null || personKey.isBlank()) return Collections.emptyList();
         return accountFacade.findByPerson(personKey);
     }
 
@@ -171,7 +179,7 @@ public class AccountLogicFacadeImpl implements AccountLogicFacade {
     // ============================================================
     // HELPERS
     // ============================================================
-    private boolean validatePerson(long personKey) {
+    private boolean validatePerson(String personKey) {
         try {
             ResponseEntity<String> resp = restTemplate.getForEntity(
                     personBaseUrl + "/find.key?key={k}", String.class, personKey);

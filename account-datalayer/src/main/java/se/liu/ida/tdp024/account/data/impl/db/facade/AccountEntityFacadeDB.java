@@ -17,7 +17,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // CREATE
     // ---------------------------------------------------------------
     @Override
-    public String createAccount(String accountType, long personKey, long bankKey) {
+    public String createAccount(String accountType, String personKey, long bankKey) {
         EntityManager em = PersistenceManager.createEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
@@ -56,7 +56,7 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
     // FIND by person key (all accounts belonging to one person)
     // ---------------------------------------------------------------
     @Override
-    public List<Account> findByPerson(long personKey) {
+    public List<Account> findByPerson(String personKey) {
         EntityManager em = PersistenceManager.createEntityManager();
         try {
             TypedQuery<Account> q = em.createQuery(
@@ -92,56 +92,41 @@ public class AccountEntityFacadeDB implements AccountEntityFacade {
         }
     }
 
-    // ---------------------------------------------------------------
-    // DEBIT  (subtract from balance)
-    // ---------------------------------------------------------------
     @Override
-    public boolean debit(long id, long amount) {
+    public boolean credit(long id, long amount) {
         EntityManager em = PersistenceManager.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
-            AccountDB account = em.find(AccountDB.class, id);
-            if (account == null) {
-                tx.rollback();
-                return false;
-            }
-            boolean ok = account.removeHoldings(amount);
-            if (ok) {
-                em.merge(account);
-            }
-            tx.commit();
-            return ok;
+            em.getTransaction().begin();
+            int rows = em.createQuery(
+                    "UPDATE AccountDB a SET a.holdings = a.holdings + :amt WHERE a.id = :id")
+                .setParameter("amt", amount)
+                .setParameter("id", id)
+                .executeUpdate();
+            em.getTransaction().commit();
+            return rows == 1;
         } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             return false;
         } finally {
             em.close();
         }
     }
-
-    // ---------------------------------------------------------------
-    // CREDIT  (add to balance)
-    // ---------------------------------------------------------------
+    
     @Override
-    public boolean credit(long id, long amount) {
+    public boolean debit(long id, long amount) {
         EntityManager em = PersistenceManager.createEntityManager();
-        EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
-            AccountDB account = em.find(AccountDB.class, id);
-            if (account == null) {
-                tx.rollback();
-                return false;
-            }
-            account.addHoldings(amount);
-            em.merge(account);
-            tx.commit();
-            return true;
+            em.getTransaction().begin();
+            int rows = em.createQuery(
+                    "UPDATE AccountDB a SET a.holdings = a.holdings - :amt " +
+                    "WHERE a.id = :id AND a.holdings >= :amt")
+                .setParameter("amt", amount)
+                .setParameter("id", id)
+                .executeUpdate();
+            em.getTransaction().commit();
+            return rows == 1;
         } catch (Exception e) {
-            if (tx.isActive()) tx.rollback();
-            e.printStackTrace();
+            if (em.getTransaction().isActive()) em.getTransaction().rollback();
             return false;
         } finally {
             em.close();

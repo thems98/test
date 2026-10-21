@@ -1,5 +1,7 @@
 package hello;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -7,8 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 import se.liu.ida.tdp024.account.data.api.entity.Account;
 import se.liu.ida.tdp024.account.data.api.entity.Transaction;
 import se.liu.ida.tdp024.account.logic.api.facade.AccountLogicFacade;
-
-import java.util.List;
 
 @RestController
 public class AccountController {
@@ -19,26 +19,23 @@ public class AccountController {
         this.logic = logic;
     }
 
-    @GetMapping("/account/create")
+    @GetMapping({"/account/create", "/account/create/"})
     public String createAccount(
-            @RequestParam("accounttype") String accountType,
-            @RequestParam("person") Long personKey,
-            @RequestParam("bank") String bankName) {
+        @RequestParam(value = "accounttype", required = false, defaultValue = "") String accountType,
+        @RequestParam(value = "person",      required = false, defaultValue = "") String personKey,
+        @RequestParam(value = "bank",        required = false, defaultValue = "") String bankName) {
 
-        String ok = logic.createAccount(personKey, bankName, accountType);
-        System.out.println("--------------------------------------HEJ-------------------------------------");
-        System.out.println(ok);
-        return ok;
+    return logic.createAccount(personKey, bankName, accountType);
     }
-
-    @GetMapping("/account/find/person")
+    
+    @GetMapping({"/account/find/person", "/account/find/person/"})
     public List<Account> findAccountByPerson(
-            @RequestParam("person") long personKey) {
+        @RequestParam(value = "person", required = false, defaultValue = "") String personKey) {
 
-        return logic.findAccountsByPerson(personKey);
+    return logic.findAccountsByPerson(personKey);
     }
 
-    @GetMapping("/account/debit")
+    @GetMapping({"/account/debit", "/account/debit/"})
     public String debitAccount(
             @RequestParam("id") long accountId,
             @RequestParam("amount") int amount) {
@@ -47,7 +44,7 @@ public class AccountController {
         return ok ? "OK" : "FAILED";
     }
 
-    @GetMapping("/account/credit")
+    @GetMapping({"/account/credit", "/account/credit/"})
     public String creditAccount(
             @RequestParam("id") long accountId,
             @RequestParam("amount") int amount) {
@@ -57,7 +54,7 @@ public class AccountController {
     }
 
     // Spec: /account/transactions
-    @GetMapping("/account/transactions")
+    @GetMapping({"/account/transactions", "/account/transactions/"})
     public List<Transaction> getTransactions(
             @RequestParam("id") long accountId) {
 

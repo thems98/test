@@ -8,20 +8,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 // import com.fasterxml.jackson.annotation.JsonProperty;
+// import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "accounts")
+@JsonIncludeProperties({"id", "personKey", "bankKey", "accountType", "holdings"})
 public class AccountDB implements Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private long personId;
+    private String personId;
     private long bankId;
     private String accountType;
     private long holdings;
-
     @Override
     public long getId() {
         return id;
@@ -32,22 +36,27 @@ public class AccountDB implements Account {
         this.id = id;
     }
 
-    @Override
-    public long getPersonId() {
+        @Override
+    @JsonProperty("personKey")
+    public String getPersonId() {
         return personId;
     }
 
     @Override
-    public void setPersonId(long personId) {
+    @JsonProperty("personKey")
+    public void setPersonId(String personId) {
         this.personId = personId;
     }
 
     @Override
-    public long getBankId() {
-        return bankId;
+    @JsonProperty("bankKey")
+    public String getBankId() {
+        // return bankId;
+        return String.valueOf(bankId);        // coerce to string for JSON
     }
 
     @Override
+    @JsonProperty("bankKey")
     public void setBankId(long bankId) {
         this.bankId = bankId;
     }

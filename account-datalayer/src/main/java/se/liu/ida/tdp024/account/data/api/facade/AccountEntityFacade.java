@@ -3,8 +3,8 @@ import se.liu.ida.tdp024.account.data.api.entity.Account;
 import java.util.List;
 
 public interface AccountEntityFacade {
-    public String createAccount(String accountType, long personKey, long bankKey);
-    public List<Account> findByPerson(long personKey);
+    public String createAccount(String accountType, String personKey, long bankKey);
+    public List<Account> findByPerson(String personKey);
     public List<Account> findByBank(long bankKey);
     public Account find(long id);
     public boolean debit(long id, long amount);
